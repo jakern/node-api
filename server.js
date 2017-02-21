@@ -18,7 +18,7 @@ var port     = process.env.PORT || 8080; // set our port
 
 var mongoose   = require('mongoose');
 mongoose.connect('mongodb://node:node@novus.modulusmongo.net:27017/Iganiq8o'); // connect to our database
-var Bear     = require('./app/models/bear');
+var NPC     = require('./app/models/npc');
 
 // ROUTES FOR OUR API
 // =============================================================================
@@ -40,19 +40,19 @@ router.get('/', function(req, res) {
 
 // on routes that end in /bears
 // ----------------------------------------------------
-router.route('/bears')
+router.route('/npcs')
 
 	// create a bear (accessed at POST http://localhost:8080/bears)
 	.post(function(req, res) {
 		
-		var bear = new Bear();		// create a new instance of the Bear model
+		var npc = new NPC();		// create a new instance of the Bear model
 		bear.name = req.body.name;  // set the bears name (comes from the request)
 
-		bear.save(function(err) {
+		npc.save(function(err) {
 			if (err)
 				res.send(err);
 
-			res.json({ message: 'Bear created!' });
+			res.json({ message: 'NPC created!' });
 		});
 
 		
@@ -60,50 +60,50 @@ router.route('/bears')
 
 	// get all the bears (accessed at GET http://localhost:8080/api/bears)
 	.get(function(req, res) {
-		Bear.find(function(err, bears) {
+		NPC.find(function(err, npcs) {
 			if (err)
 				res.send(err);
 
-			res.json(bears);
+			res.json(npcs);
 		});
 	});
 
 // on routes that end in /bears/:bear_id
 // ----------------------------------------------------
-router.route('/bears/:bear_id')
+router.route('/npcs/:npc_id')
 
 	// get the bear with that id
 	.get(function(req, res) {
-		Bear.findById(req.params.bear_id, function(err, bear) {
+		NPC.findById(req.params.npc_id, function(err, npc) {
 			if (err)
 				res.send(err);
-			res.json(bear);
+			res.json(npc);
 		});
 	})
 
 	// update the bear with this id
 	.put(function(req, res) {
-		Bear.findById(req.params.bear_id, function(err, bear) {
+		NPC.findById(req.params.npc_id, function(err, npc) {
 
 			if (err)
 				res.send(err);
 
-			bear.name = req.body.name;
-			bear.save(function(err) {
+			npc.name = req.body.name;
+			npc.save(function(err) {
 				if (err)
 					res.send(err);
 
-				res.json({ message: 'Bear updated!' });
+				res.json({ message: 'NPC updated!' });
 			});
 
 		});
 	})
 
-	// delete the bear with this id
+	// delete the npc with this id
 	.delete(function(req, res) {
-		Bear.remove({
-			_id: req.params.bear_id
-		}, function(err, bear) {
+		NPC.remove({
+			_id: req.params.npc_id
+		}, function(err, npc) {
 			if (err)
 				res.send(err);
 
